@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME:?error}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD:?error}
+    networks:
+      - module-network
+    volumes:
+      - /data/db
+
+  db-gui:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USERNAME:?error}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD:?error}
+      ME_CONFIG_MONGODB_URL: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - module-network
+
+  app:
+    build: .
+    ports:
+      - "${APP_PORT:-5001}:${APP_PORT:-5001}"
+    depends_on:
+      - db
+    environment:
+      PORT: ${APP_PORT:-5001}
+      MONGODB_USERNAME: ${DB_USERNAME:?error}
+      MONGODB_PASSWORD: ${DB_PASSWORD:?error}
+      MONGODB_URI: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/ecommerce
+    networks:
+      - module-network
+
+networks:
+  module-network:
