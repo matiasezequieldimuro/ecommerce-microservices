@@ -73,7 +73,9 @@ public class ArticleGatewayMongoDB implements IArticleGateway {
 
     @Override
     public List<Article> retrieveArticlesFromInventory(String user_ID) {
-        throw new UnsupportedOperationException("Unimplemented method 'retrieveArticlesFromInventory'");
+        GlobalLogger.getInstance().info(">>> Article Gateway MongoDB - retrieveArticlesFromInventory");
+        List<ArticleSchema> inventory = this.articleRepository.findAllByUserID(user_ID);
+        return inventory.stream().map(ArticleSchema::toArticle).toList();
     }
 
     @Override
