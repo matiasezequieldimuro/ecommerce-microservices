@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import mdimuro.ecommerce.microservices.inventory_service.application.errors.ArticleNotFoundException;
 import mdimuro.ecommerce.microservices.inventory_service.application.errors.ArticlesSavedException;
 import mdimuro.ecommerce.microservices.inventory_service.domain.dto.ArticleDTO;
 import mdimuro.ecommerce.microservices.inventory_service.domain.entities.Article;
@@ -84,8 +85,14 @@ public class ArticleGatewayMongoDB implements IArticleGateway {
     }
 
     @Override
-    public void deleteArticleFromInventory(String user_ID, String articleID) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteArticleFromInventory'");
+    public void deleteArticleFromInventory(String articleID) {
+        GlobalLogger.getInstance().info(">>> Article Gateway MongoDB - deleteArticleFromInventory");
+        this.articleRepository.findById(articleID).ifPresentOrElse(
+            article -> this.articleRepository.deleteById(articleID),
+            () -> {
+                throw new ArticleNotFoundException("Article not found in inventory");
+            }
+        );
     }
     
 }

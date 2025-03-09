@@ -9,5 +9,5 @@ public interface IArticleGateway {
     List<Article> addArticlesToInventory(String user_ID, List<ArticleDTO> articles);
     List<Article> retrieveArticlesFromInventory(String user_ID);
     Article updateArticleInInventory(String user_ID, String articleID, ArticleDTO article);
-    void deleteArticleFromInventory(String user_ID, String articleID);
+    void deleteArticleFromInventory(String articleID);
 }
