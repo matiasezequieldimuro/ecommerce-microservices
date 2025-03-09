@@ -10,6 +10,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME:?error}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD:?error}
+      MONGO_INITDB_DATABASE: ecommerce
     networks:
       - module-network
     volumes:
@@ -40,7 +41,7 @@ services:
       PORT: ${APP_PORT:-5001}
       MONGODB_USERNAME: ${DB_USERNAME:?error}
       MONGODB_PASSWORD: ${DB_PASSWORD:?error}
-      MONGODB_URI: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/ecommerce
+      MONGODB_URI: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/ecommerce?authSource=admin
     networks:
       - module-network
 
