@@ -27,5 +27,4 @@ public class ArticleInboundDTO {
             .article_ID(this.article_ID)
             .build();
     }
-    
-};
+}

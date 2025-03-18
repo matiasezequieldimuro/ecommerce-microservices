@@ -1,14 +1,12 @@
 package mdimuro.ecommerce.microservices.inventory_service.domain.dto;
 
-import java.time.LocalDate;
-
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mdimuro.ecommerce.microservices.inventory_service.domain.entities.Article;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
