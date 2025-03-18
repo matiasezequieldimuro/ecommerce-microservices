@@ -1,0 +1,37 @@
+name: Workflow Inventory Service
+on:
+    push:
+        branches:
+            - main
+            - develop
+        paths:
+            - 'inventory-service/src/**'
+            - '.github/workflows/inventory-service-pipeline.yml'
+            - 'inventory-service/pom.xml'
+            - 'inventory-service/Dockerfile'
+            - 'inventory-service/docker-compose.yml'
+    # pull_request:
+    #     branches:
+    #         - main
+    #     paths:
+    #         - 'inventory-service/src/**'
+    #         - '.github/workflows/inventory-service-pipeline.yml'
+    #         - 'inventory-service/pom.xml'
+    #         - 'inventory-service/Dockerfile'
+    #         - 'inventory-service/docker-compose.yml'
+jobs:
+    continuous-integration:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - name: Set up JDK 17
+              uses: actions/setup-java@v4
+              with:
+                java-version: '17'
+                distribution: 'temurin'
+                cache: maven
+            - name: Build
+              run: mvn clean install -DskipTests
+            - name: Unit & Integration tests
+              run: mvn test
