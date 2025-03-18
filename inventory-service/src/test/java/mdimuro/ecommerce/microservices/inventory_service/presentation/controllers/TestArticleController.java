@@ -46,7 +46,7 @@ public class TestArticleController extends TestsMongoDBContainer {
     }
 
     @Test
-    void retrieveArticlesFromInventory_UserHasSomeItems_UploadOnlyNewArticles() throws Exception {
+    void addArticlesToInventory_UserHasSomeItems_UploadOnlyNewArticles() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
             .post("/api/articles")
             .contentType("application/json")
@@ -57,6 +57,14 @@ public class TestArticleController extends TestsMongoDBContainer {
         .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(3))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity").value(10))
         .andExpect(MockMvcResultMatchers.jsonPath("$[2].article_ID").value("44444"));
+    }
+
+    @Test
+    void removeArticleFromInventory_UserHasNotAnyItems_ReturnErrorNotFound() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+            .delete("/api/articles/1a2b3c4d")
+        )
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     // Tests Nomenclature : [Method / Action] _ [InitialConditions] _ [ExpectedResults]
