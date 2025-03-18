@@ -10,15 +10,15 @@ on:
             - 'inventory-service/pom.xml'
             - 'inventory-service/Dockerfile'
             - 'inventory-service/docker-compose.yml'
-    # pull_request:
-    #     branches:
-    #         - main
-    #     paths:
-    #         - 'inventory-service/src/**'
-    #         - '.github/workflows/inventory-service-pipeline.yml'
-    #         - 'inventory-service/pom.xml'
-    #         - 'inventory-service/Dockerfile'
-    #         - 'inventory-service/docker-compose.yml'
+    pull_request:
+        branches:
+            - main
+        paths:
+            - 'inventory-service/src/**'
+            - '.github/workflows/inventory-service-pipeline.yml'
+            - 'inventory-service/pom.xml'
+            - 'inventory-service/Dockerfile'
+            - 'inventory-service/docker-compose.yml'
 jobs:
     continuous-integration:
         runs-on: ubuntu-latest
@@ -33,5 +33,7 @@ jobs:
                 cache: maven
             - name: Build
               run: mvn clean install -DskipTests
+              working-directory: inventory-service
             - name: Unit & Integration tests
               run: mvn test
+              working-directory: inventory-service
