@@ -1,0 +1,19 @@
+server:
+  port: ${GATEWAY_APP_PORT:5000}
+spring:
+  application:
+    name: api-gateway
+  # cloud:
+  #   gateway:
+  #     routes:
+  #       - id: inventory-service
+  #         uri: http://localhost:5001
+  #         filters:
+  #           - PrefixPath=/api
+  #           - AddResponseHeader=X-Powered-By,InventoryService
+  #         predicates:
+  #           - Path=/articles/**
+logging:
+  level:
+    org:
+      springframework: DEBUG

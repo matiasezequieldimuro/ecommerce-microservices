@@ -21,10 +21,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copia el archivo JAR desde la imagen de compilación
-COPY --from=build /app/target/inventory-service-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/api-gateway-0.0.1-SNAPSHOT.jar app.jar
 
 # Expone el puerto en el que la aplicación se ejecutará
-EXPOSE 5001
+EXPOSE 5000
 
 # Define el comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

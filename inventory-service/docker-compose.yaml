@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  inventory-db:
     image: mongo
     restart: always
     ports:
@@ -13,6 +13,7 @@ services:
       MONGO_INITDB_DATABASE: ecommerce
     networks:
       - module-network
+      - ecommerce-network
     volumes:
       - /data/db
 
@@ -22,28 +23,32 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - db
+      - inventory-db
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USERNAME:?error}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASSWORD:?error}
-      ME_CONFIG_MONGODB_URL: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@inventory-db:27017/
       ME_CONFIG_BASICAUTH: false
     networks:
       - module-network
+      - ecommerce-network
 
-  app:
+  inventory-app:
     build: .
     ports:
       - "${APP_PORT:-5001}:${APP_PORT:-5001}"
     depends_on:
-      - db
+      - inventory-db
     environment:
-      PORT: ${APP_PORT:-5001}
-      MONGODB_USERNAME: ${DB_USERNAME:?error}
-      MONGODB_PASSWORD: ${DB_PASSWORD:?error}
-      MONGODB_URI: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@db:27017/ecommerce?authSource=admin
+      INVENTORY_PORT: ${APP_PORT:-5001}
+      INVENTORY_MONGODB_USERNAME: ${DB_USERNAME:?error}
+      INVENTORY_MONGODB_PASSWORD: ${DB_PASSWORD:?error}
+      INVENTORY_MONGODB_URI: mongodb://${DB_USERNAME:?error}:${DB_PASSWORD:?error}@inventory-db:27017/ecommerce?authSource=admin
     networks:
       - module-network
+      - ecommerce-network
 
 networks:
   module-network:
+  ecommerce-network:
+    external: true
